@@ -8,19 +8,15 @@ import static java.lang.String.format;
  */
 public class Length {
     private final int amount;
-    private final String unit;
-    private final int inchAmount;
+    private final Unit unit;
 
-    public Length(int amount, String unit) {
+    public Length(int amount, Unit unit) {
         this.amount = amount;
         this.unit = unit;
-        if (unit.equals("foot")) {
-            this.inchAmount = amount * 12;
-        } else if (unit.equals("yard")) {
-            this.inchAmount = amount * 3 * 12;
-        } else {
-            this.inchAmount = amount;
-        }
+    }
+
+    private int getInchAmount() {
+        return unit.getInchAmount(amount);
     }
 
     public int amount() {
@@ -28,7 +24,7 @@ public class Length {
     }
 
     public String unit() {
-        return unit;
+        return unit.getName();
     }
 
     @Override
@@ -38,16 +34,11 @@ public class Length {
 
         Length length = (Length) o;
 
-        return inchAmount == length.inchAmount;
-    }
-
-    @Override
-    public int hashCode() {
-        return inchAmount;
+        return getInchAmount() == length.getInchAmount();
     }
 
     @Override
     public String toString() {
-        return format("%d (%s)", amount, unit);
+        return format("%d (%s)", amount, unit.getName());
     }
 }
